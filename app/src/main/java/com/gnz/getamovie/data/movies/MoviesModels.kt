@@ -1,4 +1,4 @@
-package com.gnz.getamovie.features.movieslist.model
+package com.gnz.getamovie.data.movies
 
 
 data class MovieList(
