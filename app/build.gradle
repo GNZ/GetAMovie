@@ -75,6 +75,9 @@ dependencies {
     // Timber
     implementation libs.timber
 
+    // Glide
+    implementation libs.glide
+
     // Unit testing
     testImplementation test.junit
     testImplementation test.mockito

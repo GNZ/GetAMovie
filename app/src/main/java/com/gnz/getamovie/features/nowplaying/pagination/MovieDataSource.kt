@@ -28,7 +28,7 @@ class MovieListDataSourceFactory(
 class MovieListDataSource(private val repository: MoviesRepository,
                           private val composite: CompositeDisposable) : PageKeyedDataSource<Int, MovieItem>() {
 
-    val nowPlayingMovies = MutableLiveData<ResourceState>()
+    val nowPlayingMoviesState = MutableLiveData<ResourceState>()
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieItem>) {
         getNowPlayingMovies(INITIAL_PAGE) { movieList ->
@@ -54,21 +54,21 @@ class MovieListDataSource(private val repository: MoviesRepository,
     }
 
     private fun getNowPlayingMovies(page: Int, callback: (List<MovieItem>) -> Unit) {
-        nowPlayingMovies.postValue(Loading)
+        nowPlayingMoviesState.postValue(Loading)
         composite.add(
                 repository.getNowPlayingList(language = null, page = page, region = null)
                         .subscribeBy(
                                 onSuccess = { movieList ->
                                     if (movieList.results.isEmpty()) {
-                                        nowPlayingMovies.postValue(EmptyState)
+                                        nowPlayingMoviesState.postValue(EmptyState)
                                     } else {
-                                        nowPlayingMovies.postValue(PopulateState)
+                                        nowPlayingMoviesState.postValue(PopulateState)
                                         callback.invoke(movieList.results)
                                     }
                                 },
                                 onError = { throwable ->
                                     Timber.e(throwable, "Error loading the movies playing right now")
-                                    nowPlayingMovies.postValue(ErrorState(throwable))
+                                    nowPlayingMoviesState.postValue(ErrorState(throwable))
                                 }
                         )
         )
