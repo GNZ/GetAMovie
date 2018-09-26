@@ -3,6 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+ext {
+    secrets = [
+            movieDbApiKey        : keyProperty("MOVIE_DB_API_KEY")
+    ]
+}
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -12,6 +18,8 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'MOVIE_DB_API_KEY', '"' + secrets.movieDbApiKey + '"'
     }
     buildTypes {
         release {
