@@ -1,4 +1,4 @@
-package com.gnz.getamovie.features.movieslist
+package com.gnz.getamovie.features.nowplaying
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

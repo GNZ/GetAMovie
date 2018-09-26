@@ -44,6 +44,9 @@ dependencies {
     implementation libs.appCompat
     implementation libs.recyclerView
 
+    //Architectural components
+    implementation libs.pagination
+
     // Dagger
     implementation libs.dagger
     implementation libs.daggerAndroid
@@ -52,12 +55,25 @@ dependencies {
     kapt proc.daggerAndroid
     compileOnly proc.javaxAnnotation
 
+    //RxJava
+    implementation libs.rxJava2
+    implementation (libs.rxKotlin2)  {
+        exclude module: 'rxjava'
+        exclude module: 'kotlin-stdlib'
+    }
+    implementation(libs.rxAndroid2) {
+        exclude module: 'rxjava'
+    }
+
     // OkHttp + Retrofit
     implementation libs.okHttp
     implementation libs.okHttpLoggingInterceptor
     implementation libs.retrofit
     implementation libs.retrofitGsonConverter
     implementation libs.retrofitRxJava2Adapter
+
+    // Timber
+    implementation libs.timber
 
     // Unit testing
     testImplementation test.junit
