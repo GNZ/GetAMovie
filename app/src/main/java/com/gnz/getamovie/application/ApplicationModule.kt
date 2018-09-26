@@ -13,7 +13,7 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 
-@Module(includes = [(AndroidSupportInjectionModule::class), (AndroidInjectionModule::class)])
+@Module(includes = [AndroidSupportInjectionModule::class, AndroidInjectionModule::class])
 abstract class ApplicationModule {
 
     @Singleton
