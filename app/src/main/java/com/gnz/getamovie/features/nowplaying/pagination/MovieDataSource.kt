@@ -32,7 +32,7 @@ class MovieListDataSource(private val repository: MoviesRepository,
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieItem>) {
         getNowPlayingMovies(INITIAL_PAGE) { movieList ->
-            callback.onResult(movieList, null, INITIAL_PAGE)
+            callback.onResult(movieList, null, INITIAL_PAGE +1)
         }
     }
 

@@ -43,8 +43,10 @@ dependencies {
     // Support
     implementation libs.appCompat
     implementation libs.recyclerView
+    implementation libs.constraintLayout
 
     //Architectural components
+    implementation libs.lifecycle
     implementation libs.pagination
 
     // Dagger
