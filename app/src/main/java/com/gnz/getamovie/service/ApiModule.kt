@@ -17,7 +17,6 @@ class ApiModule {
     @Provides
     fun provideMoviesApi(retrofit: Retrofit): MoviesApi = retrofit.create(MoviesApi::class.java)
 
-    @Named(MOVIES_REMOTE_REPOSITORY)
     @Singleton
     @Provides
     fun provideMoviesRemoteRepository(remoteMoviesRepository: RemoteMoviesRepository): MoviesRepository = remoteMoviesRepository

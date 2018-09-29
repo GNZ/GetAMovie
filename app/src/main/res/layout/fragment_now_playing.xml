@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.movieslist.NowPlayingFragment">
+    tools:context=".features.nowplaying.NowPlayingFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/nowPlayingRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:spanCount="@integer/list_span_count"
+        android:scrollbars="vertical"/>
 
+    <ImageView
+        android:id="@+id/nothingToShowImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:src="@drawable/round_empty"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 </FrameLayout>

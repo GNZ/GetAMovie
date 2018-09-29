@@ -9,6 +9,10 @@ ext {
     glideVersion = '4.6.1'
     paperParcelVersion = '2.0.5'
     ankoVersion = '0.10.4'
+    lifecycleVersion = "1.1.1"
+    pagingVersion = "1.0.1"
+    archVersion = "1.0.2"
+    coreTestVersion = "1.0.0"
 
     libs = [
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
@@ -23,7 +27,10 @@ ext {
             palette                 : "com.android.support:palette-v7:$supportLibraryVersion",
             preference              : "com.android.support:preference-v7:$supportLibraryVersion",
             annotations             : "com.android.support:support-annotations:$supportLibraryVersion",
-            constraintLayout        : "com.android.support.constraint:constraint-layout:1.0.2",
+            lifecycle               : "android.arch.lifecycle:extensions:$lifecycleVersion",
+            pagination              : "android.arch.paging:runtime:$pagingVersion",
+            constraintLayout        : "com.android.support.constraint:constraint-layout:$archVersion",
+            coreTest                : "android.arch.core:core-testing:$coreTestVersion",
             mosby                   : "com.hannesdorfmann.mosby3:mvp:$mosbyVersion",
             mosbyMvi                : "com.hannesdorfmann.mosby3:mvi:$mosbyVersion",
             mosbyViewState          : "com.hannesdorfmann.mosby3:viewstate:$mosbyVersion",
