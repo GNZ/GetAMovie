@@ -14,20 +14,15 @@ import javax.inject.Inject
 
 class NowPlayingViewModel @Inject constructor(moviesRepository: MoviesRepository) : ViewModel() {
 
-    val movieListLiveData: LiveData<PagedList<MovieItem>>
-    private val composite = CompositeDisposable()
-    val dataSourceFactory: MovieListDataSourceFactory
-
-    init {
-        dataSourceFactory = MovieListDataSourceFactory(moviesRepository, composite)
-
+    val movieListLiveData: LiveData<PagedList<MovieItem>> by lazy {
         val config = PagedList.Config.Builder()
                 .setPageSize(PAGE_SIZE)
                 .setEnablePlaceholders(false)
                 .build()
-
-        movieListLiveData = LivePagedListBuilder<Int, MovieItem>(dataSourceFactory, config).build()
+        LivePagedListBuilder<Int, MovieItem>(dataSourceFactory, config).build()
     }
+    private val composite = CompositeDisposable()
+    private val dataSourceFactory: MovieListDataSourceFactory = MovieListDataSourceFactory(moviesRepository, composite)
 
     fun getState(): LiveData<ResourceState> =
             Transformations.switchMap<MovieListDataSource, ResourceState>(
@@ -35,6 +30,6 @@ class NowPlayingViewModel @Inject constructor(moviesRepository: MoviesRepository
             ) { it.nowPlayingMoviesState }
 
     companion object {
-        private const val PAGE_SIZE = 2
+        const val PAGE_SIZE = 2
     }
 }

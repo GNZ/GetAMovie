@@ -3,4 +3,6 @@
 
     <!-- ViewHolder -->
     <string name="image_poster">Image poster</string>
+
+    <string name="error_loading">Ups! Something went wrong</string>
 </resources>

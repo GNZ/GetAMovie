@@ -55,9 +55,9 @@ class MovieListDataSource(private val repository: MoviesRepository,
 
     private fun getNowPlayingMovies(page: Int, callback: (List<MovieItem>) -> Unit) {
         nowPlayingMoviesState.postValue(Loading)
+        val observer = repository.getNowPlayingList(language = null, page = page, region = null)
         composite.add(
-                repository.getNowPlayingList(language = null, page = page, region = null)
-                        .subscribeBy(
+                observer.subscribeBy(
                                 onSuccess = { movieList ->
                                     if (movieList.results.isEmpty()) {
                                         nowPlayingMoviesState.postValue(EmptyState)

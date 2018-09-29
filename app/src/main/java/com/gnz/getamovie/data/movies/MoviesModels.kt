@@ -1,5 +1,7 @@
 package com.gnz.getamovie.data.movies
 
+import java.util.*
+
 
 data class MovieList(
         val page: Int,
@@ -30,3 +32,24 @@ data class MovieItem(
         val video: Boolean,
         val vote_average: Double
 )
+
+private val someDate = Dates("", "")
+
+val emptyMovieList = MovieList(0, listOf(), someDate, 0, 0)
+
+private fun getRandom() = Random().nextInt(999) + 1
+
+private val movie = MovieItem("",
+        false, "",
+        "", listOf(),
+        1,
+        "",
+        "",
+        "",
+        "",
+        2.toDouble(),
+        1,
+        false,
+        2.toDouble())
+
+val notEmptyMovieList = MovieList(getRandom(), listOf(movie), someDate, getRandom(), getRandom())

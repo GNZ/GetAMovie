@@ -19,6 +19,7 @@ import com.gnz.getamovie.data.movies.MovieItem
 import com.gnz.getamovie.features.nowplaying.pagination.NowPlayingAdapter
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_now_playing.*
+import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 
@@ -78,14 +79,18 @@ class NowPlayingFragment : Fragment() {
     private fun showLoadingState(showLoading: Boolean) {
         progressBar.visibleOrGone(showLoading)
         movieAdapter.shouldShowLoading(showLoading)
+        nothingToShowImage.visibleOrGone(!showLoading)
     }
 
     private fun showEmptyState() {
-
+        nothingToShowImage.visibleOrGone(true)
+        nowPlayingRecyclerView.visibleOrGone(false)
+        progressBar.visibleOrGone(false)
     }
 
     private fun showErrorState() {
-
+        showEmptyState()
+        toast(R.string.error_loading)
     }
 
     override fun onAttach(context: Context) {
