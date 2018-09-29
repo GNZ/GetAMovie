@@ -54,7 +54,6 @@ class NowPlayingFragment : Fragment() {
                         else 1
             }
         }
-
         nowPlayingRecyclerView.adapter = movieAdapter
     }
 

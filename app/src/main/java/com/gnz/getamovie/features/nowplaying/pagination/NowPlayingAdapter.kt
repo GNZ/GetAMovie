@@ -6,9 +6,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gnz.getamovie.R
+import com.gnz.getamovie.application.extensions.getFullImageUrl
 import com.gnz.getamovie.data.movies.MovieItem
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -29,10 +32,11 @@ class NowPlayingAdapter(private val glide: RequestManager) : PagedListAdapter<Mo
     override fun onBindViewHolder(holder: NowPlayingLoadingViewHolder, position: Int) {
         if (holder is NowPlayingViewHolder) {
             val item = getItem(position)
-            item?.poster_path?.let { path ->
-                glide.load(path)
+            item?.backdrop_path?.let { path ->
+                glide.load(path.getFullImageUrl())
                         .apply(RequestOptions.fitCenterTransform())
                         .apply(RequestOptions().error(R.drawable.default_image))
+                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                         .into(holder.poster)
                 holder.poster.setOnClickListener {
                     clickSubject.onNext(MovieDetails(item.title, item.overview, path))
