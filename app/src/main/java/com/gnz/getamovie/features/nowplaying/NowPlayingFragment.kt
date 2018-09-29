@@ -16,8 +16,11 @@ import com.gnz.getamovie.application.extensions.visibleOrGone
 import com.gnz.getamovie.application.extensions.withViewModel
 import com.gnz.getamovie.data.common.*
 import com.gnz.getamovie.data.movies.MovieItem
+import com.gnz.getamovie.features.MainActivity
+import com.gnz.getamovie.features.nowplaying.pagination.MovieDetails
 import com.gnz.getamovie.features.nowplaying.pagination.NowPlayingAdapter
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.fragment_now_playing.*
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
@@ -60,8 +63,10 @@ class NowPlayingFragment : Fragment() {
 
     private fun initData() {
         withViewModel<NowPlayingViewModel>(viewModelFactory) {
+            initViewModel(movieAdapter.observeMovieClick())
             observe(getState(), ::showState)
             observe(movieListLiveData, ::showNowPlayingMovies)
+            observe(movieClickLiveData,::showMovieDetails)
         }
     }
 
@@ -91,6 +96,10 @@ class NowPlayingFragment : Fragment() {
     private fun showErrorState() {
         showEmptyState()
         toast(R.string.error_loading)
+    }
+
+    private fun showMovieDetails(movieDetails: MovieDetails){
+        (activity as MainActivity).showMovieDetails(movieDetails)
     }
 
     override fun onAttach(context: Context) {
