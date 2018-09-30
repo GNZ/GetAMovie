@@ -39,7 +39,7 @@ class NowPlayingAdapter(private val glide: RequestManager) : PagedListAdapter<Mo
                         .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                         .into(holder.poster)
                 holder.poster.setOnClickListener {
-                    clickSubject.onNext(MovieDetails(item.title, item.overview, path))
+                    clickSubject.onNext(MovieDetails(item.original_title, item.overview, path))
                 }
             }
         }

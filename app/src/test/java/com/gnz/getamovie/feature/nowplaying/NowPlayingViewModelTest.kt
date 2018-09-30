@@ -9,11 +9,13 @@ import com.gnz.getamovie.data.movies.MovieList
 import com.gnz.getamovie.data.movies.emptyMovieList
 import com.gnz.getamovie.data.movies.notEmptyMovieList
 import com.gnz.getamovie.features.nowplaying.NowPlayingViewModel
+import com.gnz.getamovie.features.nowplaying.pagination.MovieDetails
 import com.gnz.getamovie.service.MoviesRepository
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
+import io.reactivex.subjects.PublishSubject
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,6 +36,10 @@ class NowPlayingViewModelTest {
 
     val pagingListObserver = mock<Observer<PagedList<MovieItem>>>()
 
+    val movieClikedObserver = mock<Observer<MovieDetails>>()
+
+    val movieClickSubject = PublishSubject.create<MovieDetails>()
+
     @Before
     fun init() {
         MockitoAnnotations.initMocks(this)
@@ -48,6 +54,7 @@ class NowPlayingViewModelTest {
             .apply {
                 getState().observeForever(stateObserver)
                 movieListLiveData.observeForever(pagingListObserver)
+                movieClickLiveData.observeForever(movieClikedObserver)
             }
 
     @Test
@@ -118,5 +125,19 @@ class NowPlayingViewModelTest {
 
         verify(stateObserver, times(3)).onChanged(Loading)
         verify(stateObserver, times(3)).onChanged(PopulateState)
+    }
+
+    @Test
+    fun `should open the activities details when a movie is clicked`(){
+        val movieDetails = MovieDetails("","","")
+
+        mockNowPlaying { onSuccess(emptyMovieList) }
+        initializeViewModel().apply {
+            initViewModel(movieClickSubject)
+        }
+
+        movieClickSubject.onNext(movieDetails)
+
+        verify(movieClikedObserver).onChanged(movieDetails)
     }
 }
