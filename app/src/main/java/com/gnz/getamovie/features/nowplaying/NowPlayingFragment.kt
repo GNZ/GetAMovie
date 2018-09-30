@@ -84,7 +84,7 @@ class NowPlayingFragment : Fragment() {
     private fun showLoadingState(showLoading: Boolean) {
         progressBar.visibleOrGone(showLoading)
         movieAdapter.shouldShowLoading(showLoading)
-        nothingToShowImage.visibleOrGone(!showLoading)
+        nothingToShowImage.visibleOrGone(false)
     }
 
     private fun showEmptyState() {

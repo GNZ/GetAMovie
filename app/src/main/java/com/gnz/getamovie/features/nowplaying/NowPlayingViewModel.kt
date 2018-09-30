@@ -36,9 +36,7 @@ class NowPlayingViewModel @Inject constructor(moviesRepository: MoviesRepository
     fun initViewModel(clickObservable: Observable<MovieDetails>) {
         composite.add(
                 clickObservable
-                        .subscribeBy(
-                                onNext = _movieClickLiveData::postValue
-                        )
+                        .subscribe(_movieClickLiveData::postValue)
         )
     }
 

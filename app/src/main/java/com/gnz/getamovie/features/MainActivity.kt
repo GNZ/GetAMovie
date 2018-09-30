@@ -15,15 +15,15 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
                 .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .replace(R.id.containerLayout, NowPlayingFragment.newInstance())
+                .replace(R.id.containerLayout, NowPlayingFragment.newInstance(), "MOVIE")
                 .commit()
     }
 
-    fun showMovieDetails(movieDetails: MovieDetails){
+    fun showMovieDetails(movieDetails: MovieDetails) {
         supportFragmentManager.beginTransaction()
                 .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .replace(R.id.containerLayout, MovieDetailsFragment.newInstance(movieDetails))
-                .addToBackStack("Details")
+                .add(R.id.containerLayout, MovieDetailsFragment.newInstance(movieDetails), "DETAILS")
+                .addToBackStack("MOVIE")
                 .commit()
     }
 }
