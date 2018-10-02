@@ -31,6 +31,7 @@ import javax.inject.Inject
 class MovieListFragment : Fragment() {
 
     companion object {
+        const val TAG = "MOVIE_LIST_FRAGMENT"
         fun newInstance() = MovieListFragment()
     }
 
@@ -104,6 +105,15 @@ class MovieListFragment : Fragment() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+            when (item.itemId) {
+                android.R.id.home -> {
+                    searchView?.isIconified = true
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_menu, menu)
         val searchManager = (activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager)
@@ -146,17 +156,26 @@ class MovieListFragment : Fragment() {
     private fun getSupportActionBar() = (activity as AppCompatActivity).supportActionBar
 
     private fun searchClicked() {
-        getSupportActionBar()?.setDisplayShowTitleEnabled(false)
+        manageActionBar(false)
         observe(viewModel.movieSearchLiveData, ::showSearchResult)
         showSearch(true)
     }
 
     private fun searchCanceled() {
-        setTitle()
+        manageActionBar(true)
         showSearch(false)
         stopObserve(viewModel.movieSearchLiveData, {})
         nothingToShowImage.visibleOrGone(false)
         nowPlayingRecyclerView.visibleOrGone(true)
+    }
+
+    private fun manageActionBar(shoulShowTitle: Boolean){
+        getSupportActionBar()?.let {
+            it.setDisplayShowTitleEnabled(shoulShowTitle)
+            it.setHomeButtonEnabled(!shoulShowTitle)
+            it.setDisplayHomeAsUpEnabled(!shoulShowTitle)
+        }
+        setTitle()
     }
 
     private fun showSearch(show: Boolean) {
@@ -212,4 +231,10 @@ class MovieListFragment : Fragment() {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
+
+    fun onBackPressed(): Boolean = if (searchView != null && !searchView!!.isIconified) {
+        searchCanceled()
+        searchView?.isIconified = true
+        false
+    } else true
 }
