@@ -20,4 +20,12 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideMoviesRemoteRepository(remoteMoviesRepository: RemoteMoviesRepository): MoviesRepository = remoteMoviesRepository
+
+    @Singleton
+    @Provides
+    fun provideNowPlayingDelegator(remoteNowPlayingDelegate: RemoteNowPlayingDelegate): NowPlayingDelegate = remoteNowPlayingDelegate
+
+    @Singleton
+    @Provides
+    fun provideSearchMovieDelegate(remoteSearchMovieDelegate: RemoteSearchMovieDelegate): SearchMovieDelegate = remoteSearchMovieDelegate
 }

@@ -12,4 +12,7 @@ interface MoviesApi {
     fun getNowPlayingList(@Query("language") language: String?,
                           @Query("page") page: Int?,
                           @Query("region") region: String?): Single<MovieList>
+
+    @GET("search/movie")
+    fun searchMovie(@Query("query") query: String, @Query("page") page: Int?): Single<MovieList>
 }

@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -18,7 +17,7 @@ import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.now_playing_view_holder.view.*
 
 
-class NowPlayingAdapter(private val glide: RequestManager) : PagedListAdapter<MovieItem, NowPlayingLoadingViewHolder>(ItemCallback) {
+class MovieListAdapter(private val glide: RequestManager) : PagedListAdapter<MovieItem, NowPlayingLoadingViewHolder>(ItemCallback) {
 
     private val clickSubject = PublishSubject.create<MovieDetails>()
     private var isLoading: Boolean = true

@@ -5,39 +5,40 @@ import android.arch.paging.DataSource
 import android.arch.paging.PageKeyedDataSource
 import com.gnz.getamovie.data.common.*
 import com.gnz.getamovie.data.movies.MovieItem
-import com.gnz.getamovie.service.MoviesRepository
+import com.gnz.getamovie.data.movies.blankMovieList
+import com.gnz.getamovie.service.ApiCallDelegate
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import timber.log.Timber
 
 
-class MovieListDataSourceFactory(
-        private val repository: MoviesRepository,
+open class MovieListDataSourceFactory(
+        val apiCallDelegate: ApiCallDelegate,
         private val composite: CompositeDisposable
 ) : DataSource.Factory<Int, MovieItem>() {
 
     val movieListDataSourceLiveData = MutableLiveData<MovieListDataSource>()
 
     override fun create(): DataSource<Int, MovieItem> {
-        val movieListDataSource = MovieListDataSource(repository, composite)
+        val movieListDataSource = MovieListDataSource(apiCallDelegate, composite)
         movieListDataSourceLiveData.postValue(movieListDataSource)
         return movieListDataSource
     }
 }
 
-class MovieListDataSource(private val repository: MoviesRepository,
+class MovieListDataSource(private val apiCallDelegate: ApiCallDelegate,
                           private val composite: CompositeDisposable) : PageKeyedDataSource<Int, MovieItem>() {
 
-    val nowPlayingMoviesState = MutableLiveData<ResourceState>()
+    val currentMoviesState = MutableLiveData<ResourceState>()
 
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, MovieItem>) {
-        getNowPlayingMovies(INITIAL_PAGE) { movieList ->
-            callback.onResult(movieList, null, INITIAL_PAGE +1)
+        getMovieList(INITIAL_PAGE) { movieList ->
+            callback.onResult(movieList, null, INITIAL_PAGE + 1)
         }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, MovieItem>) {
-        getNowPlayingMovies(params.key) { movieList ->
+        getMovieList(params.key) { movieList ->
             callback.onResult(movieList, params.key + 1)
         }
     }
@@ -48,29 +49,30 @@ class MovieListDataSource(private val repository: MoviesRepository,
         } else {
             params.key - 1
         }
-        getNowPlayingMovies(params.key) { movieList ->
+        getMovieList(params.key) { movieList ->
             callback.onResult(movieList, before)
         }
     }
 
-    private fun getNowPlayingMovies(page: Int, callback: (List<MovieItem>) -> Unit) {
-        nowPlayingMoviesState.postValue(Loading)
-        val observer = repository.getNowPlayingList(language = null, page = page, region = null)
+    private fun getMovieList(page: Int, callback: (List<MovieItem>) -> Unit) {
+        currentMoviesState.postValue(Loading)
         composite.add(
-                observer.subscribeBy(
-                                onSuccess = { movieList ->
-                                    if (movieList.results.isEmpty()) {
-                                        nowPlayingMoviesState.postValue(EmptyState)
-                                    } else {
-                                        nowPlayingMoviesState.postValue(PopulateState)
-                                        callback.invoke(movieList.results)
-                                    }
-                                },
-                                onError = { throwable ->
-                                    Timber.e(throwable, "Error loading the movies playing right now")
-                                    nowPlayingMoviesState.postValue(ErrorState(throwable))
+                apiCallDelegate.getPage(page).subscribeBy(
+                        onSuccess = { movieList ->
+                            when {
+                                movieList == blankMovieList -> currentMoviesState.postValue(EmptyQueryState)
+                                movieList.results.isEmpty() -> currentMoviesState.postValue(EmptyState)
+                                else -> {
+                                    currentMoviesState.postValue(PopulateState)
+                                    callback.invoke(movieList.results)
                                 }
-                        )
+                            }
+                        },
+                        onError = { throwable ->
+                            Timber.e(throwable, "Error loading the movies playing right now")
+                            currentMoviesState.postValue(ErrorState(throwable))
+                        }
+                )
         )
     }
 

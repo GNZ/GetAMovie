@@ -5,4 +5,10 @@
     <string name="image_poster">Image poster</string>
 
     <string name="error_loading">Ups! Something went wrong</string>
+
+    <string name="search_movie">Search</string>
+
+    <string name="movies">Movies</string>
+
+    <string name="movies_details">Movies Details</string>
 </resources>
