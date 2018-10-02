@@ -1,9 +1,9 @@
 package com.gnz.getamovie.features
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import com.gnz.getamovie.R
-import com.gnz.getamovie.features.moviedetails.MovieDetailsFragment
+import com.gnz.getamovie.features.moviedetails.MovieDetailsActivity
 import com.gnz.getamovie.features.movielist.MovieListFragment
 import com.gnz.getamovie.features.movielist.pagination.MovieDetails
 
@@ -15,15 +15,18 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction()
                 .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .replace(R.id.containerLayout, MovieListFragment.newInstance(), "MOVIE")
+                .replace(R.id.containerLayout, MovieListFragment.newInstance(), MovieListFragment.TAG)
                 .commit()
     }
 
     fun showMovieDetails(movieDetails: MovieDetails) {
-        supportFragmentManager.beginTransaction()
-                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .add(R.id.containerLayout, MovieDetailsFragment.newInstance(movieDetails), "DETAILS")
-                .addToBackStack("MOVIE")
-                .commit()
+        MovieDetailsActivity.showDetails(this, movieDetails)
+    }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag(MovieListFragment.TAG)
+        if (fragment != null && (fragment as MovieListFragment).onBackPressed()) {
+            super.onBackPressed()
+        }
     }
 }

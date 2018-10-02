@@ -1,6 +1,7 @@
 package com.gnz.getamovie.features.movielist.pagination
 
 import android.arch.paging.PagedListAdapter
+import android.os.Parcelable
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.gnz.getamovie.application.extensions.getFullImageUrl
 import com.gnz.getamovie.data.movies.MovieItem
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.now_playing_view_holder.view.*
 
 
@@ -74,7 +76,8 @@ class MovieListAdapter(private val glide: RequestManager) : PagedListAdapter<Mov
     }
 }
 
-data class MovieDetails(val title: String, val details: String, val posterPath: String)
+@Parcelize
+data class MovieDetails(val title: String, val details: String, val posterPath: String): Parcelable
 
 class NowPlayingViewHolder(parent: ViewGroup) : NowPlayingLoadingViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.now_playing_view_holder, parent, false)) {
