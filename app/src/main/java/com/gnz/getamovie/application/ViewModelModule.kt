@@ -2,7 +2,7 @@ package com.gnz.getamovie.application
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.gnz.getamovie.features.nowplaying.NowPlayingViewModel
+import com.gnz.getamovie.features.movielist.MovieListViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -34,6 +34,6 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(NowPlayingViewModel::class)
-    internal abstract fun postListViewModel(viewModel: NowPlayingViewModel): ViewModel
+    @ViewModelKey(MovieListViewModel::class)
+    internal abstract fun postListViewModel(viewModel: MovieListViewModel): ViewModel
 }

@@ -1,4 +1,4 @@
-package com.gnz.getamovie.features.nowplaying.pagination
+package com.gnz.getamovie.features.movielist.pagination
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.DataSource

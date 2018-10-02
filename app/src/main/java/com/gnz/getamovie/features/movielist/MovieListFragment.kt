@@ -1,4 +1,4 @@
-package com.gnz.getamovie.features.nowplaying
+package com.gnz.getamovie.features.movielist
 
 import android.app.SearchManager
 import android.arch.paging.PagedList
@@ -20,19 +20,18 @@ import com.gnz.getamovie.application.extensions.withViewModel
 import com.gnz.getamovie.data.common.*
 import com.gnz.getamovie.data.movies.MovieItem
 import com.gnz.getamovie.features.MainActivity
-import com.gnz.getamovie.features.nowplaying.pagination.MovieDetails
-import com.gnz.getamovie.features.nowplaying.pagination.MovieListAdapter
+import com.gnz.getamovie.features.movielist.pagination.MovieDetails
+import com.gnz.getamovie.features.movielist.pagination.MovieListAdapter
 import dagger.android.support.AndroidSupportInjection
-import io.reactivex.subjects.PublishSubject
-import kotlinx.android.synthetic.main.fragment_now_playing.*
+import kotlinx.android.synthetic.main.fragment_movie_list.*
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 
-class NowPlayingFragment : Fragment() {
+class MovieListFragment : Fragment() {
 
     companion object {
-        fun newInstance() = NowPlayingFragment()
+        fun newInstance() = MovieListFragment()
     }
 
     @Inject
@@ -42,13 +41,13 @@ class NowPlayingFragment : Fragment() {
 
     private lateinit var searchMovieAdapter: MovieListAdapter
 
-    private lateinit var viewModel: NowPlayingViewModel
+    private lateinit var viewModel: MovieListViewModel
 
     private var searchView: SearchView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_now_playing, container, false)
+        return inflater.inflate(R.layout.fragment_movie_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
