@@ -1,12 +1,8 @@
 package com.gnz.getamovie.service
 
 import com.gnz.getamovie.data.movies.MovieList
-import com.gnz.getamovie.data.movies.blankMovieList
+import com.gnz.getamovie.data.movies.BLANK_MOVIE_LIST
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.BehaviorSubject
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 open class RemoteMoviesRepository @Inject constructor(private val moviesApi: MoviesApi) : MoviesRepository {
@@ -29,6 +25,6 @@ class RemoteSearchMovieDelegate @Inject constructor(private val repository: Remo
     override fun getPage(page: Int): Single<MovieList> = if (query.isNotBlank()) {
         repository.searchMovie(query, page)
     } else {
-        Single.just(blankMovieList)
+        Single.just(BLANK_MOVIE_LIST)
     }
 }

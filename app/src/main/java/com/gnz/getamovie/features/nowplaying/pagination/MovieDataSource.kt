@@ -5,7 +5,7 @@ import android.arch.paging.DataSource
 import android.arch.paging.PageKeyedDataSource
 import com.gnz.getamovie.data.common.*
 import com.gnz.getamovie.data.movies.MovieItem
-import com.gnz.getamovie.data.movies.blankMovieList
+import com.gnz.getamovie.data.movies.BLANK_MOVIE_LIST
 import com.gnz.getamovie.service.ApiCallDelegate
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -60,7 +60,7 @@ class MovieListDataSource(private val apiCallDelegate: ApiCallDelegate,
                 apiCallDelegate.getPage(page).subscribeBy(
                         onSuccess = { movieList ->
                             when {
-                                movieList == blankMovieList -> currentMoviesState.postValue(EmptyQueryState)
+                                movieList === BLANK_MOVIE_LIST -> currentMoviesState.postValue(EmptyQueryState)
                                 movieList.results.isEmpty() -> currentMoviesState.postValue(EmptyState)
                                 else -> {
                                     currentMoviesState.postValue(PopulateState)

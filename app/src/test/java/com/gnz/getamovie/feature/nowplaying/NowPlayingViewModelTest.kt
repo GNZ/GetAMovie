@@ -7,7 +7,6 @@ import com.gnz.getamovie.data.common.*
 import com.gnz.getamovie.data.movies.*
 import com.gnz.getamovie.features.nowplaying.NowPlayingViewModel
 import com.gnz.getamovie.features.nowplaying.pagination.MovieDetails
-import com.gnz.getamovie.service.MoviesRepository
 import com.gnz.getamovie.service.NowPlayingDelegate
 import com.gnz.getamovie.service.SearchMovieDelegate
 import com.nhaarman.mockito_kotlin.mock
@@ -163,7 +162,7 @@ class NowPlayingViewModelTest {
         viewModel.searchQuery("monster")
         pagedList?.loadAround(1)
 
-        verify(stateObserver, times(1 + NowPlayingViewModel.PAGE_SIZE))
+        verify(stateObserver, times(2 + NowPlayingViewModel.PAGE_SIZE))
                 .onChanged(Loading)
         verify(stateObserver, times(2 + NowPlayingViewModel.PAGE_SIZE))
                 .onChanged(PopulateState)
@@ -190,7 +189,7 @@ class NowPlayingViewModelTest {
 
     @Test
     fun `should show the empty query when searching starts`() {
-        mockSearch { onSuccess(blankMovieList) }
+        mockSearch { onSuccess(BLANK_MOVIE_LIST) }
 
         val viewModel = NowPlayingViewModel(nowPlayingDelegate, searchMovieDelegate)
                 .apply {

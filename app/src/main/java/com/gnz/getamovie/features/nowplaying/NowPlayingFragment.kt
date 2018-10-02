@@ -94,7 +94,7 @@ class NowPlayingFragment : Fragment() {
     }
 
     private fun initData() {
-        viewModel = withViewModel<NowPlayingViewModel>(viewModelFactory) {
+        viewModel = withViewModel(viewModelFactory) {
             val movieClick = nowPlayingAdapter.observeMovieClick()
                     .mergeWith(searchMovieAdapter.observeMovieClick())
                     .doOnNext { clearFocus() }
