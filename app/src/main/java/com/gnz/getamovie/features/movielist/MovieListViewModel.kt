@@ -1,26 +1,22 @@
-package com.gnz.getamovie.features.nowplaying
+package com.gnz.getamovie.features.movielist
 
 import android.arch.lifecycle.*
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.gnz.getamovie.data.common.ResourceState
 import com.gnz.getamovie.data.movies.MovieItem
-import com.gnz.getamovie.features.nowplaying.pagination.MovieDetails
-import com.gnz.getamovie.features.nowplaying.pagination.MovieListDataSource
-import com.gnz.getamovie.features.nowplaying.pagination.MovieListDataSourceFactory
-import com.gnz.getamovie.service.MoviesApi
+import com.gnz.getamovie.features.movielist.pagination.MovieDetails
+import com.gnz.getamovie.features.movielist.pagination.MovieListDataSource
+import com.gnz.getamovie.features.movielist.pagination.MovieListDataSourceFactory
 import com.gnz.getamovie.service.NowPlayingDelegate
-import com.gnz.getamovie.service.RemoteSearchMovieDelegate
 import com.gnz.getamovie.service.SearchMovieDelegate
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-class NowPlayingViewModel @Inject constructor(nowPlayingDelegate: NowPlayingDelegate,
-                                              searchMovieDelegate: SearchMovieDelegate) : ViewModel() {
+class MovieListViewModel @Inject constructor(nowPlayingDelegate: NowPlayingDelegate,
+                                             searchMovieDelegate: SearchMovieDelegate) : ViewModel() {
 
     private val config = PagedList.Config.Builder()
             .setPageSize(PAGE_SIZE)

@@ -1,12 +1,12 @@
-package com.gnz.getamovie.feature.nowplaying
+package com.gnz.getamovie.feature.movielist
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
 import android.arch.paging.PagedList
 import com.gnz.getamovie.data.common.*
 import com.gnz.getamovie.data.movies.*
-import com.gnz.getamovie.features.nowplaying.NowPlayingViewModel
-import com.gnz.getamovie.features.nowplaying.pagination.MovieDetails
+import com.gnz.getamovie.features.movielist.MovieListViewModel
+import com.gnz.getamovie.features.movielist.pagination.MovieDetails
 import com.gnz.getamovie.service.NowPlayingDelegate
 import com.gnz.getamovie.service.SearchMovieDelegate
 import com.nhaarman.mockito_kotlin.mock
@@ -23,7 +23,7 @@ import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 
 
-class NowPlayingViewModelTest {
+class MovieListViewModelTest {
 
     @Rule
     @JvmField
@@ -41,8 +41,6 @@ class NowPlayingViewModelTest {
 
     val movieClickSubject = PublishSubject.create<MovieDetails>()
 
-    val searchSubject = BehaviorSubject.create<String>()
-
     @Before
     fun init() {
         MockitoAnnotations.initMocks(this)
@@ -58,7 +56,7 @@ class NowPlayingViewModelTest {
                 .thenReturn(Single.create { e -> e.block() })
     }
 
-    private fun initializeViewModel() = NowPlayingViewModel(nowPlayingDelegate, searchMovieDelegate)
+    private fun initializeViewModel() = MovieListViewModel(nowPlayingDelegate, searchMovieDelegate)
             .apply {
                 getState().observeForever(stateObserver)
                 movieListLiveData.observeForever(pagingListObserver)
@@ -102,7 +100,7 @@ class NowPlayingViewModelTest {
         mockNowPlaying { onSuccess(notEmptyMovieList) }
 
         var pagedList: PagedList<MovieItem>? = null
-        NowPlayingViewModel(nowPlayingDelegate, searchMovieDelegate)
+        MovieListViewModel(nowPlayingDelegate, searchMovieDelegate)
                 .apply {
                     getState().observeForever(stateObserver)
                     movieListLiveData.observeForever { pagedList = it }
@@ -110,9 +108,9 @@ class NowPlayingViewModelTest {
 
         pagedList?.loadAround(1)
 
-        verify(stateObserver, times(1 + NowPlayingViewModel.PAGE_SIZE))
+        verify(stateObserver, times(1 + MovieListViewModel.PAGE_SIZE))
                 .onChanged(Loading)
-        verify(stateObserver, times(1 + NowPlayingViewModel.PAGE_SIZE))
+        verify(stateObserver, times(1 + MovieListViewModel.PAGE_SIZE))
                 .onChanged(PopulateState)
     }
 
@@ -121,7 +119,7 @@ class NowPlayingViewModelTest {
         mockNowPlaying { onSuccess(notEmptyMovieList) }
 
         var pagedList: PagedList<MovieItem>? = null
-        NowPlayingViewModel(nowPlayingDelegate, searchMovieDelegate)
+        MovieListViewModel(nowPlayingDelegate, searchMovieDelegate)
                 .apply {
                     getState().observeForever(stateObserver)
                     movieListLiveData.observeForever { pagedList = it }
@@ -154,7 +152,7 @@ class NowPlayingViewModelTest {
         mockSearch { onSuccess(notEmptyMovieList) }
 
         var pagedList: PagedList<MovieItem>? = null
-        val viewModel = NowPlayingViewModel(nowPlayingDelegate, searchMovieDelegate)
+        val viewModel = MovieListViewModel(nowPlayingDelegate, searchMovieDelegate)
                 .apply {
                     getState().observeForever(stateObserver)
                     movieSearchLiveData.observeForever { pagedList = it }
@@ -162,9 +160,9 @@ class NowPlayingViewModelTest {
         viewModel.searchQuery("monster")
         pagedList?.loadAround(1)
 
-        verify(stateObserver, times(2 + NowPlayingViewModel.PAGE_SIZE))
+        verify(stateObserver, times(2 + MovieListViewModel.PAGE_SIZE))
                 .onChanged(Loading)
-        verify(stateObserver, times(2 + NowPlayingViewModel.PAGE_SIZE))
+        verify(stateObserver, times(2 + MovieListViewModel.PAGE_SIZE))
                 .onChanged(PopulateState)
     }
 
@@ -173,7 +171,7 @@ class NowPlayingViewModelTest {
         mockSearch { onSuccess(notEmptyMovieList) }
 
         var pagedList: PagedList<MovieItem>? = null
-        val viewModel = NowPlayingViewModel(nowPlayingDelegate, searchMovieDelegate)
+        val viewModel = MovieListViewModel(nowPlayingDelegate, searchMovieDelegate)
                 .apply {
                     getState().observeForever(stateObserver)
                     movieSearchLiveData.observeForever { pagedList = it }
@@ -191,7 +189,7 @@ class NowPlayingViewModelTest {
     fun `should show the empty query when searching starts`() {
         mockSearch { onSuccess(BLANK_MOVIE_LIST) }
 
-        val viewModel = NowPlayingViewModel(nowPlayingDelegate, searchMovieDelegate)
+        val viewModel = MovieListViewModel(nowPlayingDelegate, searchMovieDelegate)
                 .apply {
                     getState().observeForever(stateObserver)
                     movieSearchLiveData.observeForever { }

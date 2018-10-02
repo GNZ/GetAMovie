@@ -1,4 +1,4 @@
-package com.gnz.getamovie.features.nowplaying.pagination
+package com.gnz.getamovie.features.movielist.pagination
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil

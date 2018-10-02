@@ -12,7 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gnz.getamovie.R
 import com.gnz.getamovie.application.extensions.getFullImageUrl
-import com.gnz.getamovie.features.nowplaying.pagination.MovieDetails
+import com.gnz.getamovie.features.movielist.pagination.MovieDetails
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
 
