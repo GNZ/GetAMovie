@@ -1,7 +1,11 @@
 package com.gnz.getamovie.features
 
+import android.app.SearchManager
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.SearchView
+import android.view.Menu
 import com.gnz.getamovie.R
 import com.gnz.getamovie.features.moviedetails.MovieDetailsFragment
 import com.gnz.getamovie.features.nowplaying.NowPlayingFragment

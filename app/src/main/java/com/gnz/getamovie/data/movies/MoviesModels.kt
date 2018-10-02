@@ -33,6 +33,8 @@ data class MovieItem(
         val vote_average: Double
 )
 
+val BLANK_MOVIE_LIST = MovieList(0, listOf(), Dates("",""), 0, 0)
+
 private val someDate = Dates("", "")
 
 val emptyMovieList = MovieList(0, listOf(), someDate, 0, 0)
