@@ -11,15 +11,16 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gnz.getamovie.R
-import com.gnz.getamovie.application.extensions.getFullImageUrl
 import com.gnz.getamovie.data.movies.MovieItem
+import com.gnz.getamovie.service.ImageProvider
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.now_playing_view_holder.view.*
 
 
-class MovieListAdapter(private val glide: RequestManager) : PagedListAdapter<MovieItem, NowPlayingLoadingViewHolder>(ItemCallback) {
+class MovieListAdapter(private val glide: RequestManager,
+                       private val imageService: ImageProvider) : PagedListAdapter<MovieItem, NowPlayingLoadingViewHolder>(ItemCallback) {
 
     private val clickSubject = PublishSubject.create<MovieDetails>()
     private var isLoading: Boolean = true
@@ -34,7 +35,7 @@ class MovieListAdapter(private val glide: RequestManager) : PagedListAdapter<Mov
         if (holder is NowPlayingViewHolder) {
             val item = getItem(position)
             item?.backdrop_path?.let { path ->
-                glide.load(path.getFullImageUrl())
+                glide.load(imageService.getImageUrl(path))
                         .apply(RequestOptions.fitCenterTransform())
                         .apply(RequestOptions().error(R.drawable.default_image))
                         .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))

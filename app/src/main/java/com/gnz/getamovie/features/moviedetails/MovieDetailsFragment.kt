@@ -1,6 +1,7 @@
 package com.gnz.getamovie.features.moviedetails
 
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -11,9 +12,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.gnz.getamovie.R
-import com.gnz.getamovie.application.extensions.getFullImageUrl
 import com.gnz.getamovie.features.movielist.pagination.MovieDetails
+import com.gnz.getamovie.service.ImageProvider
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import javax.inject.Inject
 
 
 class MovieDetailsFragment : Fragment() {
@@ -34,6 +37,9 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+    @Inject
+    lateinit var imageService: ImageProvider
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -47,7 +53,7 @@ class MovieDetailsFragment : Fragment() {
 
         arguments?.let {
             if (it.containsKey(PATH_EXTRA)) {
-                Glide.with(this).load(it.getString(PATH_EXTRA).getFullImageUrl())
+                Glide.with(this).load(imageService.getImageUrl(it.getString(PATH_EXTRA)))
                         .apply(RequestOptions.fitCenterTransform())
                         .apply(RequestOptions().error(R.drawable.default_image))
                         .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
@@ -62,5 +68,10 @@ class MovieDetailsFragment : Fragment() {
                 moviewDetailsTextView.text = it.getString(DETAILS_EXTRA)
             }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 }

@@ -3,7 +3,6 @@ package com.gnz.getamovie.service
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -28,4 +27,8 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideSearchMovieDelegate(remoteSearchMovieDelegate: RemoteSearchMovieDelegate): SearchMovieDelegate = remoteSearchMovieDelegate
+
+    @Singleton
+    @Provides
+    fun provideImageService(remoteImageService: RemoteImageProvider): ImageProvider = remoteImageService
 }
