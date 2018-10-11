@@ -22,6 +22,7 @@ import com.gnz.getamovie.data.movies.MovieItem
 import com.gnz.getamovie.features.MainActivity
 import com.gnz.getamovie.features.movielist.pagination.MovieDetails
 import com.gnz.getamovie.features.movielist.pagination.MovieListAdapter
+import com.gnz.getamovie.service.ImageProvider
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_movie_list.*
 import org.jetbrains.anko.support.v4.toast
@@ -37,6 +38,9 @@ class MovieListFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var imageService: ImageProvider
 
     private lateinit var nowPlayingAdapter: MovieListAdapter
 
@@ -66,11 +70,11 @@ class MovieListFragment : Fragment() {
     private fun initViews() {
         setTitle()
         // Now playing recyclerview
-        nowPlayingAdapter = MovieListAdapter(Glide.with(this))
+        nowPlayingAdapter = MovieListAdapter(Glide.with(this), imageService)
         initRecyclerView(nowPlayingRecyclerView, nowPlayingAdapter)
 
         // Now playing recyclerview
-        searchMovieAdapter = MovieListAdapter(Glide.with(this))
+        searchMovieAdapter = MovieListAdapter(Glide.with(this), imageService)
         initRecyclerView(searchRecyclerView, searchMovieAdapter)
     }
 
@@ -169,7 +173,7 @@ class MovieListFragment : Fragment() {
         nowPlayingRecyclerView.visibleOrGone(true)
     }
 
-    private fun manageActionBar(shoulShowTitle: Boolean){
+    private fun manageActionBar(shoulShowTitle: Boolean) {
         getSupportActionBar()?.let {
             it.setDisplayShowTitleEnabled(shoulShowTitle)
             it.setHomeButtonEnabled(!shoulShowTitle)
